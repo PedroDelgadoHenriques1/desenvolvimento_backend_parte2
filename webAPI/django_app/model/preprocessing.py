@@ -11,6 +11,38 @@ PT_NEG_WORDS = {'não', 'nenhum', 'jamais', 'nada', 'nunca', 'nem', 'ninguém', 
 open_classes = {'NOUN', 'VERB', 'ADJ', 'ADV'}
 
 
+# TODO improvement: improve chain of function calls (how to make it more pythonic?)
+def preprocess_text(text):
+    text = money_conversion(text)
+    text = percentage_conversion(text)
+    text = lowercase(text)
+    text = strip_accents(text)
+    tokens = word_tokenizee(text)
+
+    revised_tokens = []
+    for token in tokens:
+        output_token = ''
+
+        if token == '.' or token == ',':
+            continue
+
+        if is_number(token):
+            output_token = 'number_value'
+        else:
+            if '/' in token:
+                output_token = 'date_value'
+            else:
+                if is_portion(token):
+                    output_token = 'portion_value'
+
+        if output_token == '':
+            output_token = token
+
+        revised_tokens.append(output_token)
+
+    return from_word_list_to_text(revised_tokens)
+
+
 def money_conversion(text):
     text = re.sub('R\$ ', 'R$', text)
     pattern = re.compile(r"R\$[1-9]\d{0,2}(?:\.\d{3})*,\d{2}")
@@ -98,34 +130,3 @@ def remove_stopwords(word_list):
 def remove_symbols(word_list):
     return [w for w in word_list if w.isalpha()]
 
-
-def preprocess(raw_text, options):
-    text = raw_text
-    lower = options.get('lower', True)
-    only_alphan = options.get('only_alphan', True)
-
-    strip_acc = options.get('strip_acc', True)
-
-    st_or_lmm = options.get('st_or_lmm', 'st')
-    stopws = options.get('stopws', False)
-
-    if lower:
-        text = lowercase(text)
-
-    if strip_acc:
-        text = strip_accents(text)
-
-    if only_alphan:
-        text = only_alpha_numeric(text)
-
-    word_list = from_text_to_word_list(text)
-
-    if st_or_lmm == 'st':
-        word_list = stem_words(word_list)
-    else:
-        pass
-
-    if stopws:
-        word_list = remove_stopwords(word_list)
-
-    return word_list
