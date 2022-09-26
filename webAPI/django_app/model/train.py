@@ -1,9 +1,10 @@
 import pickle
-from dataset_manipulation import DatasetManipulation
 
 
-dm = DatasetManipulation("model/dataset.csv")
+from webAPI.django_app.model.dataset_manipulation import DatasetManipulation
+
+dm = DatasetManipulation("webAPI/django_app/model/dataset.csv")
 
 dm.train()
 
-pickle.dump(dm, open("../trained_DM.pkl", "wb"))
+pickle.dump(dm, open("webAPI/django_app/model/trained_DM.pkl", "wb"))

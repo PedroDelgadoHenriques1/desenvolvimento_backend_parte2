@@ -11,7 +11,7 @@ from sklearn.preprocessing import MultiLabelBinarizer
 import webAPI.django_app.model.preprocessing as pp
 
 
-df = pd.read_csv("model/dataset.csv")
+df = pd.read_csv("webAPI/django_app/model/dataset.csv")
 
 different_one_or_two_categories = list(set(df['category']))
 clean_categories = [sample_categories.split(',') for sample_categories in list(df['category'])]
