@@ -1,7 +1,7 @@
-import os
 import pickle
 
 from django.http import JsonResponse
+from django.shortcuts import redirect
 
 from rest_framework.decorators import api_view
 
@@ -14,24 +14,17 @@ def train_model(request):
     dm.train()
 
     pickle.dump(dm, open("django_app/model/trained_DM.pkl", "wb"))
-    print("train completed")
+
+    return redirect('classify_sentence')
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def classify_sentence(request):
     if request.method == 'POST':
         sentence = request.data.get('sentence', None)
-        print(sentence)
 
-        # print(os.path.abspath(os.getcwd()))
-        # import sys
-        # sys.path.append(os.path.abspath(os.getcwd()) + 'django_app/model/')
         trained_DM = pickle.load(open("django_app/model/trained_DM.pkl", "rb"))
-        prediction = trained_DM.predict(sentence)
-        classification_list = prediction[0]
-
-        print(classification_list)
-        # classification_list = [1, 0, 1, 0, 1]
+        classification_list = trained_DM.predict(sentence)
 
         response = {
             'financas': int(classification_list[trained_DM.labels_and_numbers['finanças']]),

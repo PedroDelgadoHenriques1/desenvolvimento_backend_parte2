@@ -20,6 +20,6 @@ from django_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.classify_sentence),
-    path('train', views.train_model)
+    path('', views.classify_sentence, name='classify_sentence'),
+    path('train', views.train_model, name='train_model')
 ]

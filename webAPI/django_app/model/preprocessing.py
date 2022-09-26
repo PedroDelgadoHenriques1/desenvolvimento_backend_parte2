@@ -11,7 +11,6 @@ PT_NEG_WORDS = {'não', 'nenhum', 'jamais', 'nada', 'nunca', 'nem', 'ninguém', 
 open_classes = {'NOUN', 'VERB', 'ADJ', 'ADV'}
 
 
-# TODO improvement: improve chain of function calls (how to make it more pythonic?)
 def preprocess_text(text):
     text = money_conversion(text)
     text = percentage_conversion(text)
@@ -39,6 +38,10 @@ def preprocess_text(text):
             output_token = token
 
         revised_tokens.append(output_token)
+
+    revised_tokens = stem_words(revised_tokens)
+    revised_tokens = [t for t in revised_tokens if len(t) > 2]
+    revised_tokens = remove_stopwords(revised_tokens)
 
     return from_word_list_to_text(revised_tokens)
 
@@ -129,4 +132,3 @@ def remove_stopwords(word_list):
 
 def remove_symbols(word_list):
     return [w for w in word_list if w.isalpha()]
-
