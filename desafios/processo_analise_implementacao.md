@@ -1,4 +1,6 @@
 
+# Relato da Análise e Implementação
+
 ### Análise do problema e experiência prévia
 Ao ler a descrição do problema já ficou claro que se tratava de uma classificação de texto padrão, com a exceção do aspecto multi-label. No meu trabalho de mestrado eu trabalhei justamente com isso (classificação de texto) e a minha esposa também (e ela ainda com multi-target!). Então já sabia mais ou menos por onde ir.
 
