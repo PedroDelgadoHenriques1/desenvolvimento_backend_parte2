@@ -9,14 +9,17 @@ from django_app.model.dataset_manipulation import DatasetManipulation
 
 
 def train_model(request):
-    dm = DatasetManipulation("django_app/model/dataset.csv")
+    try:
+        dm = DatasetManipulation("django_app/model/dataset.csv")
 
-    dm.train()
+        dm.train()
 
-    pickle.dump(dm, open("django_app/model/trained_DM.pkl", "wb"))
+        pickle.dump(dm, open("django_app/model/trained_DM.pkl", "wb"))
 
-    return redirect('classify_sentence')
-
+        return redirect('classify_sentence')
+    except Exception:
+        print('Deu merda')
+    
 
 @api_view(['POST'])
 def classify_sentence(request):
